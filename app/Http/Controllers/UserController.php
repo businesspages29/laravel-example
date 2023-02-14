@@ -30,15 +30,18 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            // 'roles' => 'required'
         ]);
-
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
+        if(is_array($input['address']) && count($input['address']) > 0){
+            $input['address'] = implode(",",$input['address']);
+        }
         $user = User::create($input);
         $user->password = $input['password'];
         Notification::send($user, new WelcomeUserNotification());
-        $user->assignRole($request->input('roles'));
+        // $user->assignRole($request->input('roles'));
+        $user->assignRole('User');
 
         return redirect()->route('users.index')
                         ->with('success','User created successfully');
@@ -53,8 +56,6 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
-
-
         return view('users.edit',compact('user','roles','userRole'));
     }
  	public function update(Request $request, $id)
@@ -62,22 +63,23 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
-            //'password' => 'same:confirm-password',
-            'roles' => 'required'
+            'password' => 'nullable|same:confirm-password',
+            // 'roles' => 'required'
         ]);
 
-
         $input = $request->all();
-        // if(!empty($input['password'])){ 
-        //     $input['password'] = Hash::make($input['password']);
-        // }else{
-        //     $input = array_except($input,array('password'));    
-        // }
-
+        if(!empty($input['password'])){ 
+            $input['password'] = Hash::make($input['password']);
+        }else{
+            unset($input['password']);
+        }
+        if(is_array($input['address']) && count($input['address']) > 0){
+            $input['address'] = implode(",",$input['address']);
+        }
         $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
-        $user->assignRole($request->input('roles'));
+        // DB::table('model_has_roles')->where('model_id',$id)->delete();
+        // $user->assignRole($request->input('roles'));
 
         return redirect()->route('users.index')
                         ->with('success','User updated successfully');

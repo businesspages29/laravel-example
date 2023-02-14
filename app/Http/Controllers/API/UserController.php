@@ -30,4 +30,9 @@ class UserController extends BaseController
             dd($e);
         }
     } 
+
+    public function forgetPassword(Request $request)
+    {
+        
+    }
 }

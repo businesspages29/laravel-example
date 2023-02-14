@@ -1,56 +1,144 @@
 @extends('layouts.admin')
 @section('content')
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Create New User</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a class="btn btn-sm btn-outline-danger" href="{{ url()->previous() }}">Back</a>
+            </div>
+        </div>
+    </div>
+    <x-admin.flash-message />
+    <form id="user-add" action="{{ route('users.store') }}" method="POST">
+        @csrf
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="form-group">
+                    <strong>Name:</strong>
+                    <input class="form-control" type="text" name="name" placeholder="Name"
+                        value="{{ old('name') }}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="form-group">
+                    <strong>Email:</strong>
+                    <input class="form-control" type="email" name="email" placeholder="Email"
+                        value="{{ old('email') }}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="form-group">
+                    <strong>Password:</strong>
+                    <input id="password" class="form-control" type="password" name="password" placeholder="Password"
+                        value="{{ old('password') }}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="form-group">
+                    <strong>Confirm Password:</strong>
+                    <input class="form-control" type="password" name="confirm-password" placeholder="Confirm Password">
+                </div>
+            </div>
+            {{-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="form-group">
+                    <strong>Role:</strong>
+                    <select class="form-control" name="roles[]" id="" multiple>
+                        @foreach ($roles as $key => $role)
+                            <option value="{{ $role }}">{{ $role }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div> --}}
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="form-group">
+                    <strong>Phone:</strong>
+                    <input class="form-control" type="number" name="phone" placeholder="Phone"
+                        value="{{ old('phone') }}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="form-group">
+                    <strong>City:</strong>
+                    <input class="form-control" type="text" name="city" placeholder="City"
+                        value="{{ old('city') }}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="form-group">
+                    <strong>State:</strong>
+                    <input class="form-control" type="text" name="state" placeholder="State"
+                        value="{{ old('state') }}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="form-group">
+                    <strong>Country:</strong>
+                    <input class="form-control" type="text" name="country" placeholder="Country"
+                        value="{{ old('country') }}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="block">
+                    <div id="multiAddress">
+                        <div class="form-group">
+                            <strong>Address:</strong>
+                            <input class="form-control" type="text" name="address[]" placeholder="Address">
+                        </div>
+                    </div>
+                    <button type="button" name="add" id="add-address" class="btn btn-outline-primary">Add
+                        Address</button>
+                </div>
+            </div>
 
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Create New User</h1>
-  <div class="btn-toolbar mb-2 mb-md-0">
-    <div class="btn-group mr-2">
-      <a class="btn btn-sm btn-outline-danger" href="{{ url()->previous() }}">Back</a>
-    </div>
-  </div>
-</div>
-<x-admin.flash-message/>
-<form action="{{ route('users.store') }}" method="POST">
-@csrf
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-        <div class="form-group">
-            <strong>Name:</strong>
-            <input class="form-control" type="text" name="name" placeholder="Name">
+            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-        <div class="form-group">
-            <strong>Email:</strong>
-            <input class="form-control" type="email" name="email" placeholder="Email">
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-        <div class="form-group">
-            <strong>Password:</strong>
-            <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-        <div class="form-group">
-            <strong>Confirm Password:</strong>
-            <input class="form-control" type="password" name="confirm-password" placeholder="Confirm Password">
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-        <div class="form-group">
-            <strong>Role:</strong>
-            <select class="form-control" name="roles[]" id="" multiple>
-            @foreach ($roles as $key => $role)
-                <option value="{{ $role }}">{{ $role }}</option>
-            @endforeach    
-            </select>
-        </div>
-    </div>
-    
-    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</div>
-</form>
+    </form>
 @endsection
+@push('js')
+    <script>
+        $("#add-address").click(function() {
+            $("#multiAddress").append(
+                '<div class="form-group"><strong>Address:</strong><input class="form-control" type="text" name="address[]" placeholder="Address"><a href="javascript:;" class="remove-address">remove</a></div>'
+            );
+        });
+        $('body').on('click', '.remove-address', function() {
+            console.log("here");
+            $(this).parent('.form-group').remove();
+        });
+        if ($("#user-add").length > 0) {
+            $("#user-add").validate({
+                rules: {
+                    'name': {
+                        required: true,
+                        maxlength: 10
+                    },
+                    'email': {
+                        required: true,
+                        email: true
+                    },
+                    'password': {
+                        required: true,
+                    },
+                    'confirm-password': {
+                        required: true,
+                        equalTo: "#password"
+                    },
+                },
+                // messages: {
+
+                //     title: {
+                //         required: "Please enter title",
+                //     },
+                //     code: {
+                //         required: "Please enter valid email",
+                //     },
+                //     description: {
+                //         required: "Please enter message",
+                //     },
+                // },
+            })
+        }
+    </script>
+@endpush
